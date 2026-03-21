@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="vi" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Demo - Spring Boot</title>
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="h-full">
+    <div id="app" class="w-full h-full overflow-auto bg-slate-950">
+        <div id="toast" class="fixed top-4 right-4 z-50 hidden"></div>
+
+        <div id="pageLogin" class="page-login w-full h-full items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0 overflow-hidden">
+                <div class="absolute -top-1/2 -left-1/2 w-full h-full rounded-full bg-indigo-600/10 blur-3xl"></div>
+                <div class="absolute -bottom-1/2 -right-1/2 w-full h-full rounded-full bg-purple-600/10 blur-3xl"></div>
+            </div>
+            <div class="login-box relative z-10 w-full max-w-md mx-4">
+                <div class="text-center mb-8">
+                    <div
+                        class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 mb-4 shadow-lg shadow-indigo-500/25">
+                        <i data-lucide="shopping-bag" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <h1 class="text-3xl font-bold text-white tracking-tight">Đăng nhập</h1>
+                </div>
+                <form id="formLogin"
+                    class="bg-slate-900/70 backdrop-blur-xl border border-slate-800 rounded-2xl p-8 shadow-2xl">
+                    <div class="mb-5">
+                        <label class="block text-sm font-medium text-slate-300 mb-2"> <i data-lucide="user"
+                                class="w-4 h-4 inline mr-1 opacity-60"></i> Tên đăng nhập </label>
+                        <input type="text" id="username" placeholder="Nhập username..."
+                            class="input-field w-full px-4 py-3 bg-slate-800/60 border border-slate-700 rounded-xl text-white text-sm">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-slate-300 mb-2"> <i data-lucide="lock"
+                                class="w-4 h-4 inline mr-1 opacity-60"></i> Mật khẩu </label>
+                        <div class="relative">
+                            <input type="password" id="password" placeholder="Nhập password..."
+                                class="input-field w-full px-4 py-3 bg-slate-800/60 border border-slate-700 rounded-xl text-white text-sm pr-12">
+                            <button type="button" id="btnTogglePassword"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white">
+                                <i data-lucide="eye" class="w-5 h-5" id="iconEye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" id="btnLogin"
+                        class="btn-login w-full py-3.5 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2">
+                        <i data-lucide="log-in" class="w-4 h-4"></i> Đăng nhập
+                    </button>
+                    <p class="text-center text-slate-400 text-sm mt-5">
+                        Chưa có tài khoản? <a href="#" id="linkToRegister" class="text-indigo-400 hover:underline">Đăng
+                            ký ngay</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+
+        <div id="pageRegister" class="w-full h-full items-center justify-center relative overflow-hidden hidden">
+            <div class="absolute inset-0 overflow-hidden">
+                <div class="absolute -top-1/2 -left-1/2 w-full h-full rounded-full bg-indigo-600/10 blur-3xl"></div>
+                <div class="absolute -bottom-1/2 -right-1/2 w-full h-full rounded-full bg-purple-600/10 blur-3xl"></div>
+            </div>
+
+            <div class="login-box relative z-10 w-full max-w-md mx-4">
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-bold text-white tracking-tight">Đăng ký</h1>
+                    <p class="text-slate-400 mt-2 text-sm">Tạo tài khoản mới để mua sắm</p>
+                </div>
+
+                <form id="formRegister"
+                    class="bg-slate-900/70 backdrop-blur-xl border border-slate-800 rounded-2xl p-8 shadow-2xl">
+                    <div class="mb-5">
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Tên đăng nhập</label>
+                        <input type="text" id="regUsername" placeholder="Chọn username..."
+                            class="input-field w-full px-4 py-3 bg-slate-800/60 border border-slate-700 rounded-xl text-white text-sm">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Mật khẩu</label>
+                        <input type="password" id="regPassword" placeholder="Nhập mật khẩu..."
+                            class="input-field w-full px-4 py-3 bg-slate-800/60 border border-slate-700 rounded-xl text-white text-sm">
+                    </div>
+                    <button type="submit" id="btnRegister"
+                        class="btn-login w-full py-3.5 rounded-xl text-white font-semibold text-sm">
+                        Đăng ký ngay
+                    </button>
+                    <p class="text-center text-slate-400 text-sm mt-5">
+                        Đã có tài khoản? <a href="#" id="linkToLogin" class="text-indigo-400 hover:underline">Quay lại
+                            Đăng nhập</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+
+        <div id="pageProducts" class="page-products flex-col w-full min-h-full">
+            <header class="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/60">
+                <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                            <i data-lucide="shopping-bag" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <span class="font-bold text-white text-lg">ShopVN</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span id="welcomeUser" class="text-slate-400 text-sm hidden sm:block"></span>
+                        <button id="btnLogout"
+                            class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm border border-slate-700">
+                            <i data-lucide="log-out" class="w-4 h-4"></i> Đăng xuất
+                        </button>
+                        <div class="relative">
+                            <button id="btnOpenCart"
+                                class="p-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white relative">
+                                <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                                <span id="cartBadge"
+                                    class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1.5 rounded-full hidden">0</span>
+                            </button>
+                        </div>
+
+                        <div id="cartDrawer"
+                            class="fixed top-0 right-0 h-screen w-full max-w-md bg-slate-900 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 border-l border-slate-800 flex flex-col hidden">
+
+                            <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-slate-900">
+                                <h3 class="text-white text-lg font-bold flex items-center gap-2">
+                                    <i data-lucide="shopping-cart" class="w-5 h-5 text-indigo-400"></i> Giỏ hàng
+                                </h3>
+                                <button id="btnCloseCart" class="p-2 text-slate-400 hover:text-white rounded-full">
+                                    <i data-lucide="x" class="w-6 h-6"></i>
+                                </button>
+                            </div>
+
+                            <div id="cartItemsList" class="flex-1 overflow-y-auto p-5 custom-scrollbar bg-slate-950/20">
+                            </div>
+
+                            <div
+                                class="p-6 border-t border-slate-800 bg-slate-900 shadow-[0_-10px_20px_rgba(0,0,0,0.4)]">
+                                <div class="flex justify-between items-center mb-6">
+                                    <span class="text-slate-400 font-medium">Tổng thanh toán:</span>
+                                    <span id="cartTotal" class="text-2xl font-extrabold text-indigo-400">0đ</span>
+                                </div>
+                                <button onclick="handleCheckout()" class="w-full py-4 bg-indigo-600 ...">
+                                    Thanh toán ngay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <main class="flex-1 max-w-6xl mx-auto px-6 py-8 w-full">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-white">Sản phẩm từ Database</h2>
+                </div>
+                <div id="productGrid" class="grid-reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
