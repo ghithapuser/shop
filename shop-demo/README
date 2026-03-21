@@ -1,0 +1,114 @@
+# 🛒 ShopVN - Fullstack E-commerce Demo
+
+Dự án website bán hàng cơ bản được xây dựng với kiến trúc Fullstack. Dự án bao gồm các chức năng cốt lõi của một trang thương mại điện tử thực tế, tập trung vào trải nghiệm mua sắm mượt mà và quản lý dữ liệu an toàn.
+
+## ✨ Các chức năng chính
+* **Xác thực người dùng:** Đăng ký, Đăng nhập bảo mật bằng JWT (JSON Web Token).
+* **Quản lý sản phẩm (Admin):** Thêm, sửa, xóa, xem danh sách sản phẩm (CRUD).
+* **Trải nghiệm mua sắm (User):** Hiển thị sản phẩm, thêm vào giỏ hàng.
+* **Giỏ hàng nổi (Cart Drawer):** Xem giỏ hàng, cập nhật số lượng, xóa sản phẩm mượt mà không cần chuyển trang.
+* **Thanh toán (Checkout):** Chốt đơn, tự động làm sạch giỏ hàng và trừ số lượng sản phẩm trong kho.
+
+## 🚀 Công nghệ sử dụng
+* **Backend:** Java, Spring Boot, Spring Data JPA, Spring Security (JWT).
+* **Frontend:** HTML5, Vanilla JavaScript, CSS (Tailwind CSS qua CDN), Lucide Icons.
+* **Database:** SQL Server / MySQL.
+* **Công cụ:** VS Code, Postman.
+
+---
+
+## 📂 Cấu trúc thư mục dự án
+```text
+ShopVN_Project/
+ ├── backend/            # Chứa mã nguồn Spring Boot (Java)
+ │   ├── src/main/java/  # Controllers, Services, Repositories, Entities, Security
+ │   ├── src/main/resources/application.properties # Cấu hình Database
+ │   └── pom.xml         # Quản lý thư viện Maven
+ │
+ ├── frontend/           # Chứa giao diện web (HTML/JS/CSS)
+ │   ├── index.html      # Giao diện chính
+ │   ├── app.js          # Xử lý logic, gọi API, lưu trữ Token
+ │   └── style.css       # Hiệu ứng CSS tùy chỉnh
+ │
+ └── README.md           # Tài liệu hướng dẫn
+
+
+📋 Yêu cầu hệ thống (Prerequisites)
+Để chạy được dự án này trên máy tính (Local), bạn cần chuẩn bị:
+
+Java Development Kit (JDK): Phiên bản 17 trở lên.
+
+Database: Hệ quản trị cơ sở dữ liệu (SQL Server Management Studio hoặc MySQL Workbench).
+
+Trình soạn thảo code: Khuyên dùng Visual Studio Code (VS Code).
+
+🔌 Các Extension cần cài đặt trên VS Code:
+Hãy vào mục Extensions của VS Code và cài đặt các tiện ích sau để code chạy không báo lỗi:
+
+Extension Pack for Java (Microsoft): Hỗ trợ môi trường và chạy code Java.
+
+Spring Boot Extension Pack (VMware): Hỗ trợ khởi chạy dự án Spring Boot.
+
+Live Server (Ritwick Dey): Dùng để chạy Frontend HTML mượt mà, tránh lỗi bảo mật CORS của trình duyệt.
+
+🛠️ Hướng dẫn cấu hình Database
+Mở phần mềm quản lý SQL của bạn (SQL Server hoặc MySQL).
+
+Tạo một Database mới có tên là shop_db (hoặc tên tùy ý bạn):
+
+SQL
+CREATE DATABASE shop_db;
+(Lưu ý: Bạn không cần tạo các bảng thủ công. Spring Data JPA sẽ tự động tạo các bảng Users, Products, Carts, CartItems khi chạy Backend lần đầu tiên).
+
+⚙️ Hướng dẫn chạy Backend (Spring Boot)
+Mở thư mục backend bằng VS Code.
+
+Tìm đến file cấu hình Database tại: src/main/resources/application.properties.
+
+Tùy chỉnh cấu hình theo loại SQL bạn đang dùng.
+
+Nếu bạn dùng MySQL:
+
+Properties
+spring.datasource.url=jdbc:mysql://localhost:3306/shop_db
+spring.datasource.username=root
+spring.datasource.password=123456
+spring.jpa.hibernate.ddl-auto=update
+
+Nếu bạn dùng MS SQL Server:
+
+Properties
+spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=shop_db;encrypt=true;trustServerCertificate=true
+spring.datasource.username=sa
+spring.datasource.password=MatKhauCuaBan123
+spring.jpa.hibernate.ddl-auto=update
+Chờ VS Code load xong các thư viện Maven (hiện chữ Ready ở góc dưới cùng bên phải).
+
+Mở file chạy chính (thường là BackendApplication.java), nhấn chuột phải chọn Run Java.
+
+Nếu Terminal hiện dòng chữ Started BackendApplication in ... seconds và chạy ở cổng 8080, Backend của bạn đã sẵn sàng!
+
+🌐 Hướng dẫn chạy Frontend
+Mở thư mục frontend bằng một cửa sổ VS Code mới.
+
+Mở file index.html.
+
+Nhấn chuột phải vào khoảng trống trong code, chọn "Open with Live Server" (hoặc nhấn nút Go Live ở góc dưới bên phải màn hình).
+
+Trình duyệt sẽ tự động mở trang web lên tại địa chỉ: http://127.0.0.1:5500/index.html.
+
+🔑 Tài khoản Test mặc định (Gợi ý)
+Sau khi hệ thống chạy, bạn có thể tự đăng ký tài khoản mới trên giao diện web, hoặc dùng Postman để bơm sẵn một số dữ liệu test:
+
+Tài khoản User (để test mua hàng):
+
+Username: user_test
+
+Password: password123
+
+(Sản phẩm có thể được thêm vào Database thông qua API /api/admin bằng Postman).
+
+
+---
+
+Như vậy là project của bạn đã được đóng gói cực kỳ chuyên nghiệp rồi đấy! Bạn lưu file lại và kéo thả lên trang GitHub (vào mục Add file -> Upload files) để cập nhật là xong. 
