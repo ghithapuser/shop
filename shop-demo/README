@@ -84,9 +84,8 @@ spring.datasource.password=MatKhauCuaBan123
 spring.jpa.hibernate.ddl-auto=update
 Chờ VS Code load xong các thư viện Maven (hiện chữ Ready ở góc dưới cùng bên phải).
 
-Mở file chạy chính (thường là BackendApplication.java), nhấn chuột phải chọn Run Java.
-
-Nếu Terminal hiện dòng chữ Started BackendApplication in ... seconds và chạy ở cổng 8080, Backend của bạn đã sẵn sàng!
+Chuyển sang Tab Terminal, bật spring boot bằng lệnh: mvn spring-boot:run.
+Khi xuất hiện dòng log: Started BackendApplication in ... seconds, Backend của bạn đã sẵn sàng!
 
 🌐 Hướng dẫn chạy Frontend
 Mở thư mục frontend bằng một cửa sổ VS Code mới.
