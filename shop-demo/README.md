@@ -2,6 +2,43 @@
 
 Website bán hàng demo: JWT, giỏ hàng (drawer), checkout trừ tồn kho. Backend Spring Boot, frontend HTML/JS + Tailwind qua CDN.
 
+## Chức năng
+
+### Backend (Spring Boot — REST API)
+
+| Nhóm | Endpoint / hành vi |
+|------|----------------------|
+| **Đăng ký** | `POST /api/auth/register` — tạo user (mặc định role `USER` nếu không gửi role). |
+| **Đăng nhập** | `POST /api/auth/login` — trả chuỗi **JWT** (raw text) hoặc `LOGIN FAILED`. |
+| **Sản phẩm (user đã đăng nhập)** | `GET /api/products` — danh sách; `POST` / `PUT /api/products/{id}` / `DELETE /api/products/{id}` / `GET /api/products/{id}` — CRUD (cần Bearer token). |
+| **Quản trị** | `POST/PUT/DELETE /api/admin/...` — CRUD sản phẩm, **chỉ tài khoản role ADMIN**; có route kiểm tra `GET /api/admin/test`. |
+| **Giỏ hàng** | `GET /api/cart` — xem giỏ; `POST /api/cart/add?productId=&quantity=` — thêm / tăng số lượng; `DELETE /api/cart/remove?productId=` — xóa dòng; `POST /api/cart/checkout` — thanh toán (trừ tồn kho, xóa hết item trong giỏ). |
+| **Tiện ích** | `GET /api/common/me` — thông tin principal sau khi xác thực JWT (hữu ích khi debug). |
+
+**Bảo mật:** Spring Security stateless + JWT filter; `/api/auth/**` mở; `/api/admin/**` bắt `ROLE_ADMIN`; các route còn lại cần JWT hợp lệ.
+
+### Frontend (trình duyệt)
+
+| Chức năng | Mô tả |
+|------------|--------|
+| **Đăng ký / Đăng nhập** | Form chuyển tab; lưu token vào `localStorage` (`jwt_token`). |
+| **Hiển thị mật khẩu** | Nút bật/tắt xem mật khẩu khi đăng nhập. |
+| **Danh sách sản phẩm** | Lưới card: tên, tồn kho, giá, nút thêm vào giỏ. |
+| **Giỏ hàng (drawer)** | Mở/đóng panel bên phải; badge **tổng số lượng**; từng dòng hiển thị đơn giá × SL, thành tiền dòng; **Tổng thanh toán**; xóa dòng; **Thanh toán** (xác nhận → gọi API checkout). |
+| **Đăng xuất** | Xóa token, quay màn hình đăng nhập. |
+| **Thông báo** | Toast thành công / lỗi. |
+
+### Chưa có trên giao diện web
+
+- Trang **quản trị** (admin UI) — CRUD sản phẩm cho admin hiện thường gọi qua **Postman** hoặc client REST.
+- **Đơn hàng lịch sử** (bảng Order): checkout chỉ trừ kho + làm trống giỏ, chưa lưu hóa đơn riêng.
+- **Đổi số lượng** từng dòng trong giỏ trên UI (API add đã hỗ trợ `quantity`).
+
+### Dữ liệu & persistence
+
+- Entity JPA: **User**, **Product**, **Cart**, **CartItem** (và enum **Role**).
+- SQL Server lưu bản ghi thật; Hibernate `ddl-auto=update` đồng bộ schema khi chạy app. Chi tiết kết nối xem mục cấu hình backend bên dưới.
+
 ## Yêu cầu môi trường
 
 | Thành phần | Phiên bản / ghi chú |
