@@ -1,8 +1,0 @@
-com\shop\backend\controller\AuthController.class
-com\shop\backend\repository\ProductRepository.class
-com\shop\backend\service\UserService.class
-com\shop\backend\entity\Role.class
-com\shop\backend\entity\Product.class
-com\shop\backend\repository\UserRepository.class
-com\shop\backend\security\JwtUtil.class
-com\shop\backend\entity\User.class
