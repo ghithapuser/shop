@@ -110,6 +110,10 @@
                     </div>
                     <div class="flex items-center gap-4">
                         <span id="welcomeUser" class="text-slate-400 text-sm hidden sm:block"></span>
+                        <button type="button" id="btnOpenAdmin" onclick="showAdminPage()"
+                            class="hidden items-center gap-2 px-4 py-2 rounded-lg bg-amber-600/90 hover:bg-amber-500 text-white text-sm border border-amber-500/50">
+                            <i data-lucide="shield" class="w-4 h-4"></i> Quản trị
+                        </button>
                         <button id="btnLogout"
                             class="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm border border-slate-700">
                             <i data-lucide="log-out" class="w-4 h-4"></i> Đăng xuất
@@ -144,7 +148,7 @@
                                     <span class="text-slate-400 font-medium">Tổng thanh toán:</span>
                                     <span id="cartTotal" class="text-2xl font-extrabold text-indigo-400">0đ</span>
                                 </div>
-                                <button type="button" onclick="handleCheckout()"
+                                <button type="button" onclick="goToCheckout()"
                                     class="w-full py-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold shadow-lg shadow-indigo-600/30 transition-colors">
                                     Thanh toán ngay
                                 </button>
@@ -156,11 +160,271 @@
             <main class="flex-1 max-w-6xl mx-auto px-6 py-8 w-full">
                 <div class="mb-8">
                     <h2 class="text-2xl font-bold text-white">Sản phẩm từ Database</h2>
+                    <p id="productPageInfo" class="text-slate-400 text-sm mt-1"></p>
                 </div>
+                <div id="productFilters" class="flex flex-wrap gap-2 mb-6" role="group"
+                    aria-label="Lọc theo loại suit"></div>
                 <div id="productGrid" class="grid-reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 </div>
+                <nav id="productPagination" class="mt-10 flex flex-wrap items-center justify-center gap-2 hidden"
+                    aria-label="Phân trang sản phẩm"></nav>
             </main>
         </div>
+
+        <section id="page-checkout" class="page-checkout hide min-h-screen bg-slate-50 py-10">
+            <div class="checkout-reveal max-w-6xl mx-auto px-4">
+                <button type="button" onclick="backFromCheckout()"
+                    class="mb-6 flex items-center text-slate-600 hover:text-indigo-600 transition text-sm font-medium">
+                    <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> Quay lại cửa hàng
+                </button>
+                <div class="mb-8">
+                    <h1 class="text-2xl md:text-3xl font-bold text-slate-900">Thanh toán</h1>
+                    <p class="text-slate-500 text-sm mt-1">The Suits House · Hoàn tất đơn hàng suit của bạn</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+                    <div class="md:col-span-7 space-y-6">
+                        <form id="checkoutForm" class="space-y-6" novalidate>
+                            <div class="bg-white rounded-2xl shadow-md border border-slate-100 p-6 md:p-8 space-y-5">
+                                <h2 class="text-lg font-semibold text-slate-900">Thông tin giao hàng</h2>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="sm:col-span-2">
+                                        <label for="checkoutName" class="block text-sm font-medium text-slate-700 mb-1.5">Họ và tên</label>
+                                        <input type="text" id="checkoutName" required class="input-field w-full px-4 py-2.5 border border-slate-200 rounded-lg text-slate-900 text-sm focus:ring-2 focus:ring-indigo-200" placeholder="Nguyễn Văn A">
+                                    </div>
+                                    <div>
+                                        <label for="checkoutPhone" class="block text-sm font-medium text-slate-700 mb-1.5">Số điện thoại</label>
+                                        <input type="tel" id="checkoutPhone" required class="input-field w-full px-4 py-2.5 border border-slate-200 rounded-lg text-slate-900 text-sm focus:ring-2 focus:ring-indigo-200" placeholder="09xxxxxxxx">
+                                    </div>
+                                    <div>
+                                        <label for="checkoutEmail" class="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+                                        <input type="email" id="checkoutEmail" required class="input-field w-full px-4 py-2.5 border border-slate-200 rounded-lg text-slate-900 text-sm focus:ring-2 focus:ring-indigo-200" placeholder="email@example.com">
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label for="checkoutAddress" class="block text-sm font-medium text-slate-700 mb-1.5">Địa chỉ chi tiết</label>
+                                        <input type="text" id="checkoutAddress" required class="input-field w-full px-4 py-2.5 border border-slate-200 rounded-lg text-slate-900 text-sm focus:ring-2 focus:ring-indigo-200" placeholder="Số nhà, tên đường, phường/xã...">
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label for="checkoutCity" class="block text-sm font-medium text-slate-700 mb-1.5">Tỉnh / Thành phố</label>
+                                        <select id="checkoutCity" required class="input-field w-full px-4 py-2.5 border border-slate-200 rounded-lg text-slate-900 text-sm focus:ring-2 focus:ring-indigo-200 bg-white">
+                                            <option value="">Chọn tỉnh/thành phố</option>
+                                            <option value="Hà Nội">Hà Nội</option>
+                                            <option value="TP. Hồ Chí Minh">TP. Hồ Chí Minh</option>
+                                            <option value="Đà Nẵng">Đà Nẵng</option>
+                                            <option value="Hải Phòng">Hải Phòng</option>
+                                            <option value="Cần Thơ">Cần Thơ</option>
+                                            <option value="Khác">Khác</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white rounded-2xl shadow-md border border-slate-100 p-6 md:p-8 space-y-4">
+                                <h2 class="text-lg font-semibold text-slate-900">Phương thức thanh toán</h2>
+                                <div class="space-y-3">
+                                    <label class="payment-card">
+                                        <input type="radio" name="paymentMethod" value="cod" checked>
+                                        <div class="payment-card-inner flex items-start gap-3">
+                                            <i data-lucide="banknote" class="w-5 h-5 text-indigo-600 mt-0.5"></i>
+                                            <div>
+                                                <p class="font-medium text-slate-900">Thanh toán khi nhận hàng (COD)</p>
+                                                <p class="text-sm text-slate-500 mt-0.5">Thanh toán tiền mặt khi nhận suit</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <label class="payment-card">
+                                        <input type="radio" name="paymentMethod" value="transfer">
+                                        <div class="payment-card-inner flex items-start gap-3">
+                                            <i data-lucide="landmark" class="w-5 h-5 text-indigo-600 mt-0.5"></i>
+                                            <div>
+                                                <p class="font-medium text-slate-900">Chuyển khoản ngân hàng</p>
+                                                <p class="text-sm text-slate-500 mt-0.5">Chuyển khoản trước — xác nhận trong 24h</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="md:col-span-5">
+                        <div class="bg-white rounded-2xl shadow-md border border-slate-100 p-6 md:p-8 sticky top-6">
+                            <h2 class="text-lg font-semibold text-slate-900 mb-4">Tóm tắt đơn hàng</h2>
+                            <div id="checkoutItemsList" class="max-h-64 overflow-y-auto custom-scrollbar space-y-4 pr-1 mb-6">
+                                <p class="text-slate-500 text-sm text-center py-6">Giỏ hàng trống</p>
+                            </div>
+                            <div class="space-y-2 text-sm border-t border-slate-100 pt-4">
+                                <div class="flex justify-between text-slate-600">
+                                    <span>Tạm tính</span>
+                                    <span id="checkoutSubtotal" class="font-medium text-slate-900">0đ</span>
+                                </div>
+                                <div class="flex justify-between text-slate-600">
+                                    <span>Phí giao hàng</span>
+                                    <span id="checkoutShipping" class="font-medium text-slate-900">30.000đ</span>
+                                </div>
+                                <div class="flex justify-between items-center pt-3 border-t border-slate-100">
+                                    <span class="font-semibold text-slate-900">Tổng cộng</span>
+                                    <span id="checkoutGrandTotal" class="text-xl font-bold text-indigo-600">0đ</span>
+                                </div>
+                            </div>
+                            <button type="button" id="btnConfirmOrder" class="btn-login w-full py-4 rounded-xl text-white font-bold text-lg shadow-lg mt-6">XÁC NHẬN ĐẶT HÀNG</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="page-admin" class="page-admin hide flex-col w-full min-h-full bg-slate-950">
+            <header class="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/60">
+                <div class="max-w-2xl mx-auto px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center">
+                            <i data-lucide="shield" class="w-5 h-5 text-white"></i>
+                        </div>
+                        <span class="font-bold text-white text-lg">Admin · Thêm sản phẩm</span>
+                    </div>
+                    <button type="button" onclick="backFromAdmin()"
+                        class="text-slate-400 hover:text-white text-sm flex items-center gap-1">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Về cửa hàng
+                    </button>
+                </div>
+            </header>
+
+            <main class="flex-1 max-w-2xl mx-auto px-6 py-10 w-full">
+                <p class="text-slate-400 text-sm mb-8">
+                    Chỉ tài khoản <span class="text-amber-400 font-medium">ADMIN</span> mới truy cập được trang này.
+                    Sản phẩm thêm ở đây hiển thị ngay trên danh sách (mô phỏng lưu DB).
+                </p>
+
+                <form id="formAddProduct"
+                    class="admin-reveal bg-slate-900/70 border border-slate-800 rounded-2xl p-8 space-y-6 shadow-xl">
+                    <div>
+                        <label for="adminProductName" class="block text-sm font-medium text-slate-300 mb-2">Tên sản
+                            phẩm</label>
+                        <input type="text" id="adminProductName" required maxlength="255"
+                            placeholder="VD: Suit nam ba mảnh xanh navy"
+                            class="input-field w-full px-4 py-3 bg-slate-800/60 border border-slate-700 rounded-xl text-white text-sm">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="adminProductPrice" class="block text-sm font-medium text-slate-300 mb-2">Giá
+                                (VNĐ)</label>
+                            <input type="number" id="adminProductPrice" required min="0" step="1000"
+                                placeholder="2890000"
+                                class="input-field w-full px-4 py-3 bg-slate-800/60 border border-slate-700 rounded-xl text-white text-sm">
+                        </div>
+                        <div>
+                            <label for="adminProductQuantity"
+                                class="block text-sm font-medium text-slate-300 mb-2">Số lượng</label>
+                            <input type="number" id="adminProductQuantity" required min="0" step="1" placeholder="10"
+                                class="input-field w-full px-4 py-3 bg-slate-800/60 border border-slate-700 rounded-xl text-white text-sm">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="adminProductImage" class="block text-sm font-medium text-slate-300 mb-2">Ảnh sản
+                            phẩm</label>
+                        <input type="file" id="adminProductImage" accept="image/*"
+                            class="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-600 file:text-white file:font-medium hover:file:bg-indigo-500">
+                        <div id="adminPreviewWrap" class="admin-preview-media mt-4 hidden">
+                            <img id="adminImagePreview" src="" alt="Xem trước ảnh">
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btnSubmitProduct"
+                        class="btn-login w-full py-3.5 rounded-xl text-white font-semibold text-sm flex items-center justify-center gap-2">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i> Thêm sản phẩm
+                    </button>
+                </form>
+            </main>
+        </div>
+
+        <section id="page-detail" class="page-detail hide min-h-full bg-white py-12">
+            <div class="detail-reveal max-w-6xl mx-auto px-6">
+                <button type="button" onclick="backToProducts()"
+                    class="mb-6 flex items-center text-gray-600 hover:text-indigo-600 transition">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Quay lại danh sách
+                </button>
+
+                <div class="flex flex-col md:flex-row gap-12">
+                    <div class="md:w-1/2 rounded-2xl overflow-hidden shadow-2xl detail-product-media">
+                        <img id="detail-image" src="" alt="">
+                    </div>
+
+                    <div class="md:w-1/2 space-y-6">
+                        <div>
+                            <h1 id="detail-title" class="text-4xl font-bold text-slate-900 leading-tight"></h1>
+                            <div id="detail-rating-summary"
+                                class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-600"
+                                aria-live="polite">
+                            </div>
+                        </div>
+                        <p id="detail-price" class="text-2xl font-semibold text-indigo-600"></p>
+                        <div id="detail-tags" class="flex flex-wrap gap-2"></div>
+
+                        <div class="border-t border-b py-6 space-y-4">
+                            <p class="text-gray-700 leading-relaxed" id="detail-desc"></p>
+                            <div class="flex gap-4 items-center">
+                                <span class="font-medium text-slate-800">Kích thước:</span>
+                                <div class="flex gap-2">
+                                    <button type="button"
+                                        class="border px-4 py-2 rounded-lg hover:bg-slate-100">S</button>
+                                    <button type="button"
+                                        class="border px-4 py-2 border-indigo-600 bg-indigo-50 text-indigo-600 rounded-lg">M</button>
+                                    <button type="button"
+                                        class="border px-4 py-2 rounded-lg hover:bg-slate-100">L</button>
+                                    <button type="button"
+                                        class="border px-4 py-2 rounded-lg hover:bg-slate-100">XL</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" id="btnDetailAddCart"
+                            class="btn-login w-full py-4 rounded-xl text-white font-bold text-lg shadow-lg">
+                            THÊM VÀO GIỎ HÀNG
+                        </button>
+                    </div>
+                </div>
+
+                <section class="mt-14 pt-10 border-t border-slate-200" aria-labelledby="reviews-heading">
+                    <h2 id="reviews-heading" class="font-bold text-2xl text-slate-900">Khách hàng đánh giá</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 mt-6">
+                        <div class="border border-slate-200 rounded-2xl bg-slate-50/80 p-6">
+                            <p class="text-sm font-medium text-slate-700 mb-4">Viết đánh giá</p>
+                            <form id="formProductReview" class="space-y-4" novalidate>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 mb-2">Đánh giá của bạn</label>
+                                    <div id="review-star-picker" class="review-star-picker flex items-center gap-1"
+                                        role="radiogroup" aria-label="Chọn số sao đánh giá">
+                                    </div>
+                                    <input type="hidden" id="review-rating-value" name="rating" value="0">
+                                </div>
+                                <div>
+                                    <label for="review-comment" class="block text-xs font-medium text-slate-500 mb-2">Nội
+                                        dung</label>
+                                    <textarea id="review-comment" name="comment" rows="4" required
+                                        class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-200 resize-y min-h-[6rem]"
+                                        placeholder="Chia sẻ trải nghiệm về sản phẩm..."></textarea>
+                                </div>
+                                <button type="submit" id="btnSubmitReview"
+                                    class="btn-login w-full py-3 rounded-xl text-white font-semibold text-sm">
+                                    Gửi đánh giá
+                                </button>
+                            </form>
+                        </div>
+                        <div class="flex flex-col min-h-0">
+                            <p class="text-sm font-medium text-slate-700 mb-3">Đánh giá từ khách hàng</p>
+                            <div id="reviews-list"
+                                class="reviews-list-scroll flex-1 overflow-y-auto max-h-[400px] pr-1 space-y-4 -mr-1">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
     </div>
 
     <script src="app.js"></script>

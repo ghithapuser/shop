@@ -38,7 +38,9 @@ public class ProductService {
 
         existingProduct.setName(newProduct.getName());
         existingProduct.setPrice(newProduct.getPrice());
-        existingProduct.setQuantity(newProduct.getQuantity()); // Dòng này sẽ giúp bạn nhận được số 12
+        existingProduct.setQuantity(newProduct.getQuantity());
+        existingProduct.setImageUrl(newProduct.getImageUrl());
+        existingProduct.setTags(newProduct.getTags());
 
         return productRepository.save(existingProduct);
     }

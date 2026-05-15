@@ -13,6 +13,8 @@ public class Product {
     private String name;
     private double price;
     private int quantity;
+    private String imageUrl;
+    private String tags;
 
     public Product() {}
 
@@ -26,4 +28,10 @@ public class Product {
 
     public int getQuantity() { return quantity; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+
+    public String getTags() { return tags; }
+    public void setTags(String tags) { this.tags = tags; }
 }

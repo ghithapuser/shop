@@ -9,6 +9,76 @@ body { box-sizing: border-box; }
 .product-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
 .product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
 
+/* Ảnh dọc gốc → khung ngang, lấy vùng phía trên (đầu / vai) */
+.product-card-media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: rgb(30 41 59);
+}
+.product-card-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
+
+.page-detail.hide { display: none !important; }
+.page-detail.show { display: block; }
+
+.page-admin.hide { display: none !important; }
+.page-admin.show { display: flex; }
+
+.admin-preview-media {
+    position: relative;
+    width: 100%;
+    max-width: 20rem;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: rgb(30 41 59);
+    border: 1px solid rgb(51 65 85);
+}
+.admin-preview-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
+
+.detail-reveal,
+.admin-reveal {
+    opacity: 0;
+    animation: cardIn 0.5s ease forwards;
+}
+
+/* Trang chi tiết: khung cao, vẫn lấy phần trên ảnh dọc */
+.detail-product-media {
+    position: relative;
+    width: 100%;
+    min-height: 28rem;
+    max-height: 44rem;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: rgb(241 245 249);
+}
+.detail-product-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
+
+.product-card { cursor: pointer; }
+.product-card [data-no-card-nav] { cursor: default; }
+
 .login-box { animation: slideUp 0.6s ease forwards; }
 @keyframes slideUp {
     from { opacity: 0; transform: translateY(30px); }
@@ -43,4 +113,88 @@ body { box-sizing: border-box; }
 /* Hiệu ứng nhấn nút Mua */
 .product-card button:active {
     transform: scale(0.95);
+}
+
+.page-checkout.hide { display: none !important; }
+.page-checkout.show { display: block; }
+
+.checkout-reveal {
+    opacity: 0;
+    animation: cardIn 0.5s ease forwards;
+}
+
+.checkout-thumb {
+    width: 4rem;
+    height: 4rem;
+    flex-shrink: 0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: rgb(241 245 249);
+    border: 1px solid rgb(226 232 240);
+}
+.checkout-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+}
+
+.payment-card {
+    display: block;
+    cursor: pointer;
+}
+.payment-card input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+.payment-card .payment-card-inner {
+    border: 2px solid rgb(226 232 240);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.payment-card input:checked + .payment-card-inner {
+    border-color: rgb(99 102 241);
+    background-color: rgb(238 242 255);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* Đánh giá sản phẩm — chọn sao */
+.review-star-picker button {
+    padding: 0.25rem;
+    line-height: 0;
+    border-radius: 0.375rem;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+}
+.review-star-picker button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
+}
+.review-star-picker button:hover {
+    background-color: rgba(251, 191, 36, 0.12);
+}
+.review-star-picker .review-star-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    stroke: #94a3b8;
+    fill: none;
+    stroke-width: 2;
+    transition: stroke 0.15s ease, fill 0.15s ease;
+}
+.review-star-picker button.is-lit .review-star-icon {
+    stroke: #fbbf24;
+    fill: #fbbf24;
+}
+
+.reviews-list-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(203 213 225) transparent;
+}
+.reviews-list-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+.reviews-list-scroll::-webkit-scrollbar-thumb {
+    background: rgb(203 213 225);
+    border-radius: 9999px;
 }

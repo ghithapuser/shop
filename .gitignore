@@ -1,5 +1,9 @@
 # Maven
 shop-demo/backend/target/
 
+# Ảnh upload (giữ thư mục uploads/ nhờ .gitkeep)
+shop-demo/backend/uploads/*
+!shop-demo/backend/uploads/.gitkeep
+
 # Editor
 .vscode/
